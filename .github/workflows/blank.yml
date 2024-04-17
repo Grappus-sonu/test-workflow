@@ -60,7 +60,7 @@ jobs:
       - name: "Image List"
         id: "fetch_image_list"
         run: |-
-          echo "image_list=$(gcloud artifacts docker images list --include-tags '${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}')" >> $GITHUB_OUTPUT
+          echo "image_list=${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}" >> $GITHUB_OUTPUT
           #run: echo "IMAGE_VERSION=$(ls | awk -F ':/v' '{print $2}' | awk '{ max = ($1 > max) ? $1 :/ max } END { print max }'" >> $GITHUB_OUTPUT
 
       - name: 'Logging Images'
