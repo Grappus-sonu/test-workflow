@@ -2,7 +2,7 @@ name: Build and Deploy to GKE
 
 on:
   push:
-    branches: [ "deploy-automation" ]
+    branches: [ "master" ]
 
 env:
   IMAGE_NAME: 'protean_sdk_uat-2.0' 
