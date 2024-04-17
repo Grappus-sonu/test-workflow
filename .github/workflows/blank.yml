@@ -57,8 +57,8 @@ jobs:
       #     cluster_name: ${{ env.GKE_CLUSTER }}
       #     location: ${{ env.GKE_ZONE }}
 
-      - name: "Image List"
-        id: "fetch_image_list"
+      - name: "Get Version Number"
+        id: "version"
         run: |-
           IMAGE_PATH="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}"
           version=$(\
@@ -67,12 +67,10 @@ jobs:
             | awk '{ max = ($1 > max) ? $1 : max } END { print max + 1 }' \
           )
           echo "new_version=$( echo $version)" >> $GITHUB_OUTPUT
-          # latest_version=$(echo $version_list | awk '{ max = ($1 > max) ? $1 :/ max } END { print max }')
-          # echo "new_version=$( echo $latest_version + 1 )" >> $GITHUB_OUTPUT
-          #run: echo "IMAGE_VERSION=$(ls | awk -F ':/v' '{print $2}' | awk '{ max = ($1 > max) ? $1 :/ max } END { print max }'" >> $GITHUB_OUTPUT
-
-      - name: 'Logging Images'
-        run: echo "Image List = ${{ steps.fetch_image_list.outputs.new_version }}"
+          
+      - name: 'Build and push container'
+        run: |-
+          docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:v${{ steps.fetch_image_list.outputs.new_version }}" .
 
       # Set up kustomize
       # - name: Set up Kustomize
