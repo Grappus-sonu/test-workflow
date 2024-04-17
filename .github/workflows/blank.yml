@@ -60,9 +60,9 @@ jobs:
       - name: "Image List"
         id: "fetch_image_list"
         run: |-
+          IMAGE_PATH="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}"
           version=$(\
-            IMAGE_PATH="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}" \
-            | gcloud artifacts docker images list $IMAGE_PATH --include-tags  \
+            | gcloud artifacts docker images list $IMAGE_PATH --include-tags \
             # | awk -F ':v' '{ $2 }' \
             # | awk '{ max = ($1 > max) ? $1 : max } END { print max }' \
           )
