@@ -63,7 +63,8 @@ jobs:
           version=$(\
             IMAGE_PATH="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}" \
             | gcloud artifacts docker images list $IMAGE_PATH --include-tags --format="value(tags)"  \
-            | awk '{ max = ($1 > max) ? $1 : max } END { print max }' \
+            | awk -F ':v' '{ $2 }'
+            # | awk '{ max = ($1 > max) ? $1 : max } END { print max }' \
           )
           echo "new_version=$( echo $version)" >> $GITHUB_OUTPUT
           # latest_version=$(echo $version_list | awk '{ max = ($1 > max) ? $1 :/ max } END { print max }')
