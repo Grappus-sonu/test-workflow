@@ -70,7 +70,7 @@ jobs:
           
       - name: 'Build and push container'
         run: |-
-          docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:v${{ steps.fetch_image_list.outputs.new_version }}" .
+          docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:v${{ steps.version.outputs.new_version }}" .
 
       # Set up kustomize
       # - name: Set up Kustomize
