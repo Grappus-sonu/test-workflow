@@ -93,7 +93,7 @@ jobs:
           instance_name: '${{ env.GCE_INSTANCE_NAME }}'
           zone: '${{ env.GCE_INSTANCE_ZONE }}'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}'
-          command: 'script.sh'
+          script: 'script.sh'
 
       # Example of using the output
       - id: 'test'
