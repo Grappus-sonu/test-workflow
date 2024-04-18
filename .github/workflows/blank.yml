@@ -98,7 +98,7 @@ jobs:
       # Example of using the output
       - name: 'Edit File'
         run: |-
-          cd /var/opt/uat-protean/web-sdk/
+          cd /var/opt/uat-protean/web-sdk
           sudo awk '/^[[:space:]]+image/ && !p_chng{sub(/:.+$/,": ${{ needs.setup-build-publish-deploy.outputs.image_path }}"); p_chng=1} 1' websdk-deployment.yml
           cat websdk-deployment.yml
           
