@@ -67,7 +67,7 @@ jobs:
   deploy-on-gce:
     # if: false
     name: 'Deploy on Google VM'
-    # needs: setup-build-publish-deploy
+    needs: setup-build-publish-deploy
     runs-on: ubuntu-latest
     environment: production
     
