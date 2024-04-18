@@ -93,7 +93,7 @@ jobs:
           instance_name: '${{ env.GCE_INSTANCE_NAME }}'
           zone: '${{ env.GCE_INSTANCE_ZONE }}'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}'
-          command: 'cd /var/opt/uat-protean/web-sdk | ls'
+          command: 'echo Hello World'
 
       # Example of using the output
       - id: 'test'
@@ -102,10 +102,10 @@ jobs:
           echo '${{ steps.compute-ssh.outputs.stderr }}'
 
       # Example of using the output
-      - name: 'Edit File'
-        run: |-
-          cd /var/opt/uat-protean/web-sdk
-          sudo awk '/^[[:space:]]+image/ && !p_chng{sub(/:.+$/,": ${{ needs.setup-build-publish-deploy.outputs.image_path }}"); p_chng=1} 1' websdk-deployment.yml
-          cat websdk-deployment.yml
+      # - name: 'Edit File'
+      #   run: |-
+      #     cd /var/opt/uat-protean/web-sdk
+      #     sudo awk '/^[[:space:]]+image/ && !p_chng{sub(/:.+$/,": ${{ needs.setup-build-publish-deploy.outputs.image_path }}"); p_chng=1} 1' websdk-deployment.yml
+      #     cat websdk-deployment.yml
           
   
