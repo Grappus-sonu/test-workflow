@@ -1,5 +1,5 @@
 #!/bin/bash
 
-cd /var/opt/uat-protean/web-sdk
-sudo awk '/^[[:space:]]+image/ && !p_chng{sub(/:.+$/,": $1"); p_chng=1} 1' websdk-deployment.yml
+awk -v path="$1" '/^[[:space:]]+image/ && !p_chng{sub(/:.+$/,": "path); p_chng=1} 1' websdk-deployment.yml > tmp
+mv tmp websdk-deployment.yml
 cat websdk-deployment.yml
