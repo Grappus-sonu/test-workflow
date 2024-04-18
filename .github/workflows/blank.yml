@@ -119,12 +119,13 @@ jobs:
           project_id: '${{ env.PROJECT_ID }}'
   
       - id: 'compute-ssh'
-        uses: 'google-github-actions/ssh-compute@v1'
+        uses: 'google-github-actions/ssh-compute@v0'
         with:
           instance_name: '${{ env.GCE_INSTANCE_NAME }}'
           zone: '${{ env.GCE_INSTANCE_ZONE }}'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}'
-          command: 'cd /var/opt/uat-protean/web-sdk | ls'
+          command: 'echo Hello World'
+          show_ssh_output: true
 
       # Example of using the output
       - name: 'Edit File'
