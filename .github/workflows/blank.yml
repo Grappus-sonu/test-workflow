@@ -87,14 +87,14 @@ jobs:
         with:
           project_id: '${{ env.PROJECT_ID }}'
       
-      - name: 'Create Script'
-        id: 'deploy-script'
-        run: res=$(cat << EOF
-          test1
-          test2
-          test3
-          EOF
-          ) >> $GITHUB_OUTPUT
+      # - name: 'Create Script'
+      #   id: 'deploy-script'
+      #   run: res=$(cat << EOF
+      #     test1
+      #     test2
+      #     test3
+      #     EOF
+      #     ) >> $GITHUB_OUTPUT
   
       - id: 'compute-ssh'
         uses: 'google-github-actions/ssh-compute@v1'
