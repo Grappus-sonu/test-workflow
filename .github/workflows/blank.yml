@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
 
+    outputs:
+      output1: ${{ steps.version.outputs.new_version }}
 
     permissions:
       contents: 'read'
@@ -68,9 +70,9 @@ jobs:
           )
           echo "new_version=$( echo $version)" >> $GITHUB_OUTPUT
           
-      - name: 'Build and push container'
-        run: |-
-          docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:v${{ steps.version.outputs.new_version }}" .
+      # - name: 'Build and push container'
+      #   run: |-
+      #     docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:v${{ steps.version.outputs.new_version }}" .
 
       # Set up kustomize
       # - name: Set up Kustomize
@@ -86,3 +88,37 @@ jobs:
       #     ./kustomize build . | kubectl apply -f -
       #     kubectl rollout status deployment/$DEPLOYMENT_NAME
       #     kubectl get services -o wide
+
+  deploy-on-gke:
+    needs: setup-build-publish-deploy
+    runs-on: ubuntu-latest
+    environment: production
+    
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+      - name: 'Checkout'
+        uses: 'actions/checkout@v4'
+  
+      - name: 'Google auth'
+        id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with:
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+  
+      - id: 'compute-ssh'
+        uses: 'google-github-actions/ssh-compute@v1'
+        with:
+          instance_name: 'uat-bastion-vm'
+          zone: 'asia-south1-c'
+          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+          command: 'cd /var/opt/uat-protean/web-sdk'
+  
+      # Example of using the output
+      - name: 'Edit File'
+        run: |-
+          echo '${{ steps.compute-ssh.outputs.stdout }}'
+          echo '${{ steps.compute-ssh.outputs.stderr }}'
+  
