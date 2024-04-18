@@ -96,6 +96,12 @@ jobs:
           command: 'cd /var/opt/uat-protean/web-sdk | ls'
 
       # Example of using the output
+      - id: 'test'
+        run: |-
+          echo '${{ steps.compute-ssh.outputs.stdout }}'
+          echo '${{ steps.compute-ssh.outputs.stderr }}'
+
+      # Example of using the output
       - name: 'Edit File'
         run: |-
           cd /var/opt/uat-protean/web-sdk
