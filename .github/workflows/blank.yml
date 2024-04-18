@@ -99,8 +99,10 @@ jobs:
       - name: "Deploy"
         run: |-
           gcloud compute ssh ${{ env.GCE_INSTANCE_NAME }} --zone=${{ env.GCE_INSTANCE_ZONE }} --ssh-key-file=${{ env.secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}
+          pwd
           cd /var/opt/uat-protean/web-sdk
-          awk -v path="${{needs.setup-build-publish-deploy.outputs.image_path}}" '/^[[:space:]]+image/ && !p_chng{sub(/:.+$/,": "path); p_chng=1} 1' websdk-deployment.yml > tmp
+          pwd
+          sudo awk -v path="${{needs.setup-build-publish-deploy.outputs.image_path}}" '/^[[:space:]]+image/ && !p_chng{sub(/:.+$/,": "path); p_chng=1} 1' websdk-deployment.yml > tmp
           mv tmp websdk-deployment.yml
           cat websdk-deployment.yml
           exit
