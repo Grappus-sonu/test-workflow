@@ -42,7 +42,7 @@ jobs:
         id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: '${{ secrets.GCP_CREDENTIALS_PERSONAL }}'
     
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
@@ -119,7 +119,7 @@ jobs:
         with:
           instance_name: '${{ env.GCE_INSTANCE_NAME }}'
           zone: '${{ env.GCE_INSTANCE_ZONE }}'
-          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
+          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}'
           command: 'cd /var/opt/uat-protean/web-sdk | ls'
 
       # Example of using the output
