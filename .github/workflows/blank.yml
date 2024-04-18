@@ -114,7 +114,7 @@ jobs:
           instance_name: 'uat-bastion-vm'
           zone: 'asia-south1-c'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
-          command: 'cd /var/opt/uat-protean/web-sdk'
+          command: 'cd /var/opt/uat-protean/web-sdk | ls'
   
       # Example of using the output
       - name: 'Edit File'
