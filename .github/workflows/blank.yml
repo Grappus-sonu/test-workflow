@@ -102,8 +102,8 @@ jobs:
           instance_name: '${{ env.GCE_INSTANCE_NAME }}'
           zone: '${{ env.GCE_INSTANCE_ZONE }}'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}'
-          # script: 'script.sh ${{ needs.setup-build-publish-deploy.outputs.image_path }}'
-          command: "sudo echo ${{steps.deploy-script.outputs.script}}"
+          script: '../../script.sh ${{ needs.setup-build-publish-deploy.outputs.image_path }}'
+          # command: "sudo echo ${{steps.deploy-script.outputs.script}}"
 
       # Example of using the output
       - id: 'test'
