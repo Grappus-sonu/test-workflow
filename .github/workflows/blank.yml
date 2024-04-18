@@ -123,9 +123,9 @@ jobs:
         with:
           instance_name: '${{ env.GCE_INSTANCE_NAME }}'
           zone: '${{ env.GCE_INSTANCE_ZONE }}'
-          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}'
+          ssh_private_key: 'jhsdkfhdsk'
+          # ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}'
           command: 'echo Hello World'
-          show_ssh_output: true
 
       # Example of using the output
       - name: 'Edit File'
