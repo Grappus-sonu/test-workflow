@@ -5,12 +5,12 @@ on:
     branches: [ "main" ]
 
 env:
-  IMAGE_NAME: 'protean_sdk_uat-2.0' 
-  PROJECT_ID: 'protean-suraksh-aa-uat'
-  GAR_LOCATION: 'asia-south1'
-  REPOSITORY: 'uat-artifact-registry-asia-south1'
-  SERVICE_ACCOUNT: "abc"
-  WIF: ''
+  IMAGE_NAME: 'web-sdk-docker' 
+  PROJECT_ID: 'annular-welder-420212'
+  GAR_LOCATION: 'asia-south2'
+  REPOSITORY: 'web-sdk-docker-pipeline-demo'
+  GCE_INSTANCE_NAME: 'uat-bastion-vm'
+  GCE_INSTANCE_ZONE: 'asia-south1-c'
 
 jobs:
   setup-build-publish-deploy:
@@ -89,7 +89,8 @@ jobs:
       #     kubectl rollout status deployment/$DEPLOYMENT_NAME
       #     kubectl get services -o wide
 
-  deploy-on-gke:
+  deploy-on-gce:
+    name: 'Deploy on Google VM'
     needs: setup-build-publish-deploy
     runs-on: ubuntu-latest
     environment: production
@@ -106,7 +107,7 @@ jobs:
         id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: '${{ secrets.GCP_CREDENTIALS_PERSONAL }}'
 
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
@@ -116,8 +117,8 @@ jobs:
       - id: 'compute-ssh'
         uses: 'google-github-actions/ssh-compute@v1'
         with:
-          instance_name: 'uat-bastion-vm'
-          zone: 'asia-south1-c'
+          instance_name: '${{ env.GCE_INSTANCE_NAME }}'
+          zone: '${{ env.GCE_INSTANCE_ZONE }}'
           ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY }}'
           command: 'cd /var/opt/uat-protean/web-sdk | ls'
 
