@@ -29,15 +29,6 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: 'actions/checkout@v4'
-
-      # Configure Workload Identity Federation and generate an access token.
-      # - id: 'auth'
-      #   name: 'Authenticate to Google Cloud'
-      #   uses: 'google-github-actions/auth@v0'
-      #   with:
-      #     token_format: 'access_token'
-      #     workload_identity_provider: '${{ env.WIF }}'
-      #     service_account: '${{ env.SERVICE_ACCOUNT }}'
       
       - name: 'Google auth'
         id: 'auth'
@@ -53,13 +44,6 @@ jobs:
       - name: 'Docker auth'
         run: gcloud auth configure-docker "${{ env.GAR_LOCATION }}-docker.pkg.dev"
 
-      # Get the GKE credentials so we can deploy to the cluster
-      # - name: 'Set up GKE credentials'
-      #   uses: google-github-actions/get-gke-credentials@v2
-      #   with:
-      #     cluster_name: ${{ env.GKE_CLUSTER }}
-      #     location: ${{ env.GKE_ZONE }}
-
       - name: "Get Version Number"
         id: "version"
         run: |-
@@ -74,21 +58,6 @@ jobs:
       # - name: 'Build and push container'
       #   run: |-
       #     docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:v${{ steps.version.outputs.new_version }}" .
-
-      # Set up kustomize
-      # - name: Set up Kustomize
-      #   run: |-
-      #     curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-      #     chmod u+x ./kustomize
-      
-      # Deploy the Docker image to the GKE cluster
-      # - name: Deploy
-      #   run: |-
-      #     # replacing the image name in the k8s template
-      #     ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG="${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:${{ env.VERSION }}"
-      #     ./kustomize build . | kubectl apply -f -
-      #     kubectl rollout status deployment/$DEPLOYMENT_NAME
-      #     kubectl get services -o wide
 
   deploy-on-gce:
     name: 'Deploy on Google VM'
