@@ -95,21 +95,26 @@ jobs:
       #     test3
       #     EOF
       #     ) >> $GITHUB_OUTPUT
+
+      - name: "Deploy"
+        run: |-
+          gcloud compute ssh ${{ env.GCE_INSTANCE_NAME }} --zone=${{ env.GCE_INSTANCE_ZONE }} --ssh-key-file=${{ env.secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}
+          pwd
+          exit
   
-      - id: 'compute-ssh'
-        uses: 'google-github-actions/ssh-compute@v1'
-        with:
-          instance_name: '${{ env.GCE_INSTANCE_NAME }}'
-          zone: '${{ env.GCE_INSTANCE_ZONE }}'
-          ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}'
-          script: '../../script.sh ${{ needs.setup-build-publish-deploy.outputs.image_path }}'
+      # - id: 'compute-ssh'
+      #   uses: 'google-github-actions/ssh-compute@v1'
+      #   with:
+      #     instance_name: '${{ env.GCE_INSTANCE_NAME }}'
+      #     zone: '${{ env.GCE_INSTANCE_ZONE }}'
+      #     ssh_private_key: '${{ secrets.GCP_SSH_PRIVATE_KEY_PERSONAL }}'
+      #     script: '../../script.sh ${{ needs.setup-build-publish-deploy.outputs.image_path }}'
           # command: "sudo echo ${{steps.deploy-script.outputs.script}}"
 
-      # Example of using the output
-      - id: 'test'
-        run: |-
-          echo '${{ steps.compute-ssh.outputs.stdout }}'
-          echo '${{ steps.compute-ssh.outputs.stderr }}'
+      # - id: 'test'
+      #   run: |-
+      #     echo '${{ steps.compute-ssh.outputs.stdout }}'
+      #     echo '${{ steps.compute-ssh.outputs.stderr }}'
 
       # Example of using the output
       # - name: 'Edit File'
