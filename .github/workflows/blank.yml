@@ -20,7 +20,7 @@ jobs:
     environment: production
 
     outputs:
-      image_path: ${{ steps.version.outputs.new_version }}
+      image_path: ${{ steps.version.outputs.image_path }}
 
     permissions:
       contents: 'read'
@@ -53,13 +53,10 @@ jobs:
             | awk -F 'v' '{ print $2 }' \
             | awk '{ max = ($1 > max) ? $1 : max } END { print max + 1 }' \
           )
-          echo "IMAGE_PATH_WITH_VERSION=$( echo ${IMAGE_PATH}:v{version})" >> $GITHUB_OUTPUT
-          # echo "new_version=$( echo $version)" >> $GITHUB_OUTPUT
+          # echo "IMAGE_PATH_WITH_VERSION=$( echo ${IMAGE_PATH}:v{version})" >> $GITHUB_OUTPUT
+          echo "new_version=$( echo $version)" >> $GITHUB_OUTPUT
+          echo "image_path=${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:v${{ steps.version.outputs.new_version }}" >> $GITHUB_OUTPUT
 
-      - name: 'Build and push container'
-        run: |-
-            echo "${{steps.version.outputs.IMAGE_PATH_WITH_VERSION}}"
-            # docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:v${{ steps.version.outputs.new_version }}"
       # - name: 'Build and push container'
       #   run: |-
       #     docker build -t "${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.IMAGE_NAME }}:v${{ steps.version.outputs.new_version }}" .
